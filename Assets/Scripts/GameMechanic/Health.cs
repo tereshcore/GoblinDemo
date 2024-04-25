@@ -11,7 +11,7 @@ public class Health : MonoBehaviour, IDamageable
     [SerializeField] Slider playerHpSlider;
     [SerializeField] Material hitMaterial;
     [SerializeField] Material defaultMaterial;
-    [SerializeField] float damageColorTimer = 0.1f;
+    [SerializeField] float damageColorTime = 0.1f;
     private int currentHealth;
 
     private void Start()
@@ -53,15 +53,15 @@ public class Health : MonoBehaviour, IDamageable
         }
     }
 
-    IEnumerator HitTimer()
-    {
-        yield return new WaitForSeconds(damageColorTimer);
-        GetComponent<SpriteRenderer>().material = defaultMaterial;
-    }
-
     public void Dead()
     {
         Instantiate(deadSkull, transform.position, Quaternion.identity);
         Destroy(gameObject);
+    }
+
+    IEnumerator HitTimer()
+    {
+        yield return new WaitForSeconds(damageColorTime);
+        GetComponent<SpriteRenderer>().material = defaultMaterial;
     }
 }

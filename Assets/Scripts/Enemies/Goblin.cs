@@ -14,8 +14,6 @@ public class Goblin : MonoBehaviour
     private Transform player;
     private Vector3 distance;
     private Animator anim;
-    private float directionX;
-    private bool isFollow;
     private bool isAttacking;
 
     void Start()
@@ -34,44 +32,31 @@ public class Goblin : MonoBehaviour
 
             if (isAttacking)
             {
-                anim.SetTrigger("Attack");
+                anim.SetTrigger("Attack"); //Attack animation contains method Attack() in it
             }
             else if (distance.magnitude < agroZone)
             {
-                isFollow = true;
+                FollowPlayer();
             }
             else
             {
-                isFollow = false;
+                anim.SetBool("Walk", false);
             }
-
         }
     }
 
-    private void FixedUpdate()
+    private void FollowPlayer()
     {
-        if (isFollow)
-        {
-            if(!isAttacking)
-            {
-                distance = distance.normalized;
-                transform.position += distance * speed * Time.deltaTime;
-                anim.SetBool("Walk", true);
-                if (distance.x >= 0)
-                {
-                    directionX = 1;
-                }
-                else
-                {
-                    directionX = -1;
-                }
-                transform.localScale = new Vector3(directionX, 1, 1);
-            }
+        int directionX;
 
-        }
-        else
-        { 
-            anim.SetBool("Walk", false); 
+        distance = distance.normalized;
+        transform.position += distance * speed * Time.deltaTime;
+        
+        anim.SetBool("Walk", true);
+        directionX = (int) Mathf.Sign(distance.x); // return 1 if distance.x > 0 and return -1 if distance.x < 0;
+        if (!Mathf.Approximately(transform.localScale.x, directionX)) // Approximately compares two floating point values and returns true if they are similar. To avoid changing localScale every frame.
+        {
+            transform.localScale = new Vector3(directionX, 1, 1);
         }
     }
 
@@ -87,6 +72,5 @@ public class Goblin : MonoBehaviour
                 damageable.TakeDamage(attackDamage);
             }
         }
-
     }
 }

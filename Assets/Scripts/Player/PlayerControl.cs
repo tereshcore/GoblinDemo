@@ -23,15 +23,13 @@ public class PlayerControl : MonoBehaviour
         input.x = Input.GetAxisRaw("Horizontal");
         input.y = Input.GetAxisRaw("Vertical");
 
-        WalkAnimation();
-
-        input = input.normalized;
+        MovementAnimation();
 
         if (Input.GetMouseButtonDown(0))
         {
             if (Time.time > nextAttackTime)
             {
-                anim.SetTrigger("Attack");
+                anim.SetTrigger("Attack"); //Attack animation contains method Attack() in it
                 nextAttackTime = Time.time + 1 / attackRate;
             }
         }
@@ -39,19 +37,20 @@ public class PlayerControl : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        input = input.normalized;
         Vector2 moveVector = input * speed * Time.deltaTime;
         rb.position += moveVector;
     }
 
-    private void WalkAnimation()
+    private void MovementAnimation()
     {
         if (input.x != 0 || input.y != 0)
         {
             anim.SetBool("Walk", true);
 
-            if (input.x != 0)
+            if (input.x != 0 && !Mathf.Approximately(transform.localScale.x, input.x)) //Approximately compares two floating point values and returns true if they are similar. To avoid changing localScale every frame.
             {
-                transform.localScale = new Vector3(input.x, 1, 1);
+                transform.localScale = new Vector3(input.x, 1, 1); 
             }
         }
         else
