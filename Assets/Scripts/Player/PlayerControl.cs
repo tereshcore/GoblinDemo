@@ -1,12 +1,11 @@
 using UnityEngine;
 
-public class PlayerControl : MonoBehaviour, IDamageable
+public class PlayerControl : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private int attackDamage;
     [SerializeField]private float attackRate = 2f;
     [SerializeField] private Vector2 attackRange;
-    [SerializeField] private GameObject deadSkull;
     [SerializeField] private Transform attackPoint;
     [SerializeField] private LayerMask playerLayer;
     private Rigidbody2D rb;
@@ -73,23 +72,5 @@ public class PlayerControl : MonoBehaviour, IDamageable
                 damageable.TakeDamage(attackDamage);
             }
         }
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        if (attackPoint!= null)
-        {
-            Gizmos.DrawWireSphere(attackPoint.position, attackRange.y);
-        }
-    }
-
-    public void TakeDamage(int damage)
-    {
-        GetComponent<Health>().TakeDamage(damage);
-    }
-    public void Dead()
-    {
-        Instantiate(deadSkull, transform.position, Quaternion.identity);
-        Destroy(gameObject);
     }
 }

@@ -2,8 +2,9 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Health : MonoBehaviour
+public class Health : MonoBehaviour, IDamageable
 {
+    [SerializeField] private GameObject deadSkull;
     [SerializeField] private int startHealth;
     [SerializeField] private int maxHealth = 100;
     [SerializeField] bool isPlayer;
@@ -31,7 +32,6 @@ public class Health : MonoBehaviour
         return maxHealth;
     }
 
-
     public void TakeDamage(int damage)
     {
         currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
@@ -57,5 +57,11 @@ public class Health : MonoBehaviour
     {
         yield return new WaitForSeconds(damageColorTimer);
         GetComponent<SpriteRenderer>().material = defaultMaterial;
+    }
+
+    public void Dead()
+    {
+        Instantiate(deadSkull, transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 }

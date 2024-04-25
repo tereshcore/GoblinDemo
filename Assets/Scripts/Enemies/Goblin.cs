@@ -2,7 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Windows;
 
-public class Goblin : MonoBehaviour, IDamageable
+public class Goblin : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private int attackDamage;
@@ -88,20 +88,5 @@ public class Goblin : MonoBehaviour, IDamageable
             }
         }
 
-    }
-
-    public void TakeDamage(int damage)
-    {
-        GetComponent<Health>().TakeDamage(damage);
-    }
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.DrawWireSphere(transform.position, agroZone); // Agro Zone visual
-        Gizmos.DrawWireSphere(attackPoint.position, attackRange); // Attack Range visual
-    }
-    public void Dead()
-    {
-        Instantiate(deadSkull, transform.position, Quaternion.identity);
-        Destroy(gameObject);
     }
 }
